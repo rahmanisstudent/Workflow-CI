@@ -27,8 +27,7 @@ jobs:
       - name: Run MLflow Project Re-training
         run: |
           cd ./MLProject
-          mlflow run . --env-manager local
-
+          mlflow run . --no-conda
 
       # Kunci Penilaian Skilled (3 pts): Simpan artefak run ke GitHub Artifacts
       - name: Upload MLflow Runs Artifacts
