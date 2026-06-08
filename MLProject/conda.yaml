@@ -10,3 +10,4 @@ dependencies:
       - xgboost
       - pandas
       - scikit-learn
+      - matplotlib
