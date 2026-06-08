@@ -26,7 +26,7 @@ jobs:
       # Jalankan perintah mlflow run dari dalam folder MLProject
       - name: Run MLflow Project Re-training
         run: |
-          cd MLProject
+          cd ../../MLProject
           mlflow run . --no-conda
 
       # Kunci Penilaian Skilled (3 pts): Simpan artefak run ke GitHub Artifacts
