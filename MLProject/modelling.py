@@ -12,6 +12,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -26,8 +27,11 @@ y = df['price']
 X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # 4. Atur Eksperimen MLflow
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
-mlflow.set_experiment("Eksperimen_Kaggle_XGBoost")
+# Jika dijalankan via 'mlflow run', tracking URI dan experiment sudah di-set otomatis.
+# Konfigurasi manual hanya diperlukan saat menjalankan skrip secara standalone.
+if not os.environ.get("MLFLOW_RUN_ID"):
+    mlflow.set_tracking_uri("http://127.0.0.1:5000")
+    mlflow.set_experiment("Eksperimen_Kaggle_XGBoost")
 
 # 5. Definisikan parameter grid untuk tuning
 param_grid = {
@@ -66,7 +70,10 @@ r2 = r2_score(y_test, y_pred)
 print(f"Test set performance: MSE={mse:.2f}, RMSE={rmse:.2f}, MAE={mae:.2f}, R2={r2:.4f}")
 
 # 9. Manual logging ke MLflow
-with mlflow.start_run() as run:
+# Jika dijalankan via 'mlflow run', sudah ada active run — gunakan itu.
+# Jika standalone, buat run baru.
+active_run = mlflow.active_run()
+with mlflow.start_run(run_id=active_run.info.run_id) if active_run else mlflow.start_run() as run:
     # Log parameter terbaik
     mlflow.log_params(best_params)
 

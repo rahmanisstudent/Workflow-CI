@@ -23,18 +23,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install mlflow==2.19.0 xgboost pandas scikit-learn matplotlib
 
-      # Jalankan MLflow tracking server di background agar modelling.py bisa terhubung ke http://127.0.0.1:5000
-      - name: Start MLflow Tracking Server
-        run: |
-          cd ./MLProject
-          mlflow server --host 127.0.0.1 --port 5000 &
-          sleep 5 # Beri waktu agar server menyala
-
       # Jalankan perintah mlflow run dari dalam folder MLProject
       - name: Run MLflow Project Re-training
         run: |
           cd ./MLProject
-          mlflow run . --env-manager local
+          mlflow run . --env-manager local --experiment-name "Eksperimen_Kaggle_XGBoost"
+
 
 
       # Kunci Penilaian Skilled (3 pts): Simpan artefak run ke GitHub Artifacts
