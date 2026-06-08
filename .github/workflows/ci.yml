@@ -15,14 +15,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12.7"
+          python-version: "3.12.7" # Menyesuaikan rekomendasi environment kelas
 
-      - name: Install MLflow and Core Dependencies
+      # PERBAIKAN: Menghapus instalasi conda dari pip, dan langsung menginstal library yang dibutuhkan modelling.py
+      - name: Install MLflow and Model Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install mlflow==2.19.0 conda
+          pip install mlflow==2.19.0 xgboost pandas scikit-learn
 
-      # Perubahan di sini: Jalankan perintah mlflow run langsung dari dalam folder MLProject
+      # Jalankan perintah mlflow run dari dalam folder MLProject
       - name: Run MLflow Project Re-training
         run: |
           cd MLProject
