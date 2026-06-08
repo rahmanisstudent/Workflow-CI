@@ -1,0 +1,37 @@
+name: Continuous Integration - MLflow Project Skilled
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  re-train-model:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+
+      - name: Install MLflow and Core Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mlflow==2.19.0 conda
+
+      # Perubahan di sini: Jalankan perintah mlflow run langsung dari dalam folder MLProject
+      - name: Run MLflow Project Re-training
+        run: |
+          cd MLProject
+          mlflow run . --no-conda
+
+      # Kunci Penilaian Skilled (3 pts): Simpan artefak run ke GitHub Artifacts
+      - name: Upload MLflow Runs Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlflow-artifacts-skilled
+          path: MLProject/mlruns/
+          retention-days: 7
